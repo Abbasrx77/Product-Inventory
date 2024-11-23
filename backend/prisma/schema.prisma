@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Produit {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  name           String  @db.String()
+  type           String  @db.String()
+  price          Float   @db.Double
+  rating         Float   @db.Double
+  warranty_years Int     @db.Int
+  available      Boolean @db.Bool
+}
+
+model User {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  nom    String @db.String()
+  prenom String @db.String()
+  email  String @unique @db.String()
+  hash   String @db.String()
+  salt   String @db.String()
+}
+
+model ActiveToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  token     String   @unique @db.String()
+  userId    String   @db.ObjectId
+  expiresAt DateTime @db.Date
+  createdAt DateTime @default(now()) @db.Date
+}
